@@ -47,7 +47,8 @@ module AuthlogicOauth2
         klass.validate_email_field = false
       end
 
-      def save(perform_validation = true, &block)
+      def save(options = {}, &block)
+        perform_validation = options.fetch(:validate, true)
         if perform_validation && block_given? && redirecting_to_oauth2_server?
           # Save attributes so they aren't lost during the authentication with the oauth2 server
           session_class.controller.session[:authlogic_oauth2_attributes] = attributes.reject!{|k, v| v.blank?}
